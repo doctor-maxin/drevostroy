@@ -11,6 +11,7 @@ const db = require('./models');
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+require('dotenv').config()
 
 
 class CustomProvider extends BaseProvider {
@@ -170,7 +171,6 @@ app.get('/', async (req, res) => {
         return sensors.map(sensor => {return sensor.toJSON()})
     })
     
-    console.log(s)
     res.render('index', {uslGr: s, works: works, uslugi: uslugi, usl: {}, config: config})
 })
 
@@ -239,4 +239,4 @@ app.post('/book', async (req, res) => {
 })
 
 app.use(adminBro.options.rootPath, router)
-app.listen(8080, () => console.log('AdminBro is under localhost:8080/admin'))
+app.listen(process.env.PORT, () => console.log('AdminBro is under localhost:'+process.env.PORT+'/admin'))
