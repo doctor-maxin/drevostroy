@@ -216,11 +216,11 @@ app.use(bodyParser.json())
 app.post('/book', async (req, res) => {
     console.log(req.body)
     let transporter = nodemailer.createTransport({
-        host: 'smtp.xn----ctbfewe2abmfkm2l.xn--p1ai',
+        host: process.env.SMTP_HOST,
         secure: true,
         auth: {
-            user: 'support@xn----ctbfewe2abmfkm2l.xn--p1ai',
-            pass: 'Hollywood75@'
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS
         }
     })
     let html = ``;
