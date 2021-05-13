@@ -1,0 +1,65 @@
+<%- include('header', {config: config}) %>
+<link rel="stylesheet" href="/dist/css/usluga.css">
+
+    <main>
+        <div class="switcher">
+            <div class="container">
+                <a title="Назад" href="#" onclick="window.history.back();" class="left"></a>
+                <h1>Галерея работ</h1>
+                
+            </div>
+        </div>
+        <div class="slide ">
+            <% if (Works.length > 0) { %>
+            <div class="slider">
+                    <ul class="slides">
+                        <% for (work of Works) { %>
+                      <li>
+                        <img src="/uploads/<%= work.img %>"> <!-- random image -->
+                        <div class="caption left-align">
+                            <div class="slide-header">
+                                <% if (Works.length > 1) { %><div class="left" onclick="M.Slider.getInstance(document.querySelector('.slider')).prev();"></div><% } %>
+                                <h3><%= work.name %></h3>
+                                <% if (Works.length > 1) { %><div class="right" onclick="M.Slider.getInstance(document.querySelector('.slider')).next();"></div><% } %>
+                            </div>
+
+                            <div class="work-desc">
+                                <%- work.description %>
+                            </div>
+                            <div class="rows">
+                                <span>Срок строительства: <b><%= work.srok %></b></span> <br>
+                                <span>Площадь работы: <b><%= work.square %> м2</b></span><br>
+                                <span>Размеры: <b><%= work.sizes %></b></span><br>
+                                <span>Стоимость: <b><%= work.cost %></b> тыс. руб.</span>
+                            </div>
+                            <% if (work.images) { %> 
+                                <div class="imgs">
+                                    <% for (let i = 0; i < work.images.key.length; i++) { %>
+                                    <img  src="/<%= work.images.bucket[i] %>/<%= work.images.key[i] %>" alt="<%= work.images.key[i] %>" class="materialboxed">
+                                <% } %>
+                            </div>
+                            <% } %>
+                        </div>
+                      </li>
+                      <% } %>
+                    </ul>
+            </div>
+            <% } else  { %>
+                <h4 class="container center-align" style="margin-top: 30px;">на данный момент нет работ</h4>
+            <% } %>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.slider');
+            var instances = M.Slider.init(elems, {
+                indicators: false,
+                height: window.innerHeight,
+                interval: 15000
+            })
+
+        });      
+
+    </script>
+<%- include('footer') %>

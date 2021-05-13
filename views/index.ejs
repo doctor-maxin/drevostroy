@@ -1,0 +1,155 @@
+<%- include('header', {config: config}) %>
+<form onsubmit="sendEmail(event, true)" id="modal1" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <h4>Заказать услугу</h4>
+        <div class="row">
+            <div class="input-field col s12">
+                <input required placeholder="Иванов Иван Иванович" id="name" type="text" class="validate">
+                <label class="active" for="name">Ваше имя</label>
+              </div>
+              <div class="input-field col s12">
+                <input required placeholder="+7 999 99 99" id="tel" type="tel" class="validate">
+                <label class="active" for="tel">Ваш номер телефона</label>
+              </div>
+              <% if (uslugi)  { %>
+              <div class="input-field col s12">
+                    <select id="service">
+                    <% for (us of uslugi) { %> 
+                        <option value="<%= us.name %>" <%= usl.id == us.id ? 'selected' : '' %>><%= us.name %></option>
+                    <% } %>                    
+                    </select>
+                <label>Выберите услугу</label>
+            </div>
+            <% } %>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="waves-effect waves-green btn-flat">ЗАКАЗАТЬ</button>
+    </div>
+</form>
+<main>
+        <div class="slide hero">
+            <div class="hero-block">
+                <h1>ДревЭко-Строй</h1>
+                <img src="/assets/icons/logo.png" alt="logo">
+                <div class="subdesc"><%- config.heroText %></div>
+                <button data-target="modal1" class="btn modal-trigger  white waves-effect waves-black btn-large">Заказать</button>
+            </div>
+            <video style="object-fit: cover; width: 100vw" autoplay class="hero-picture" muted loop id="myVideo">
+                <source src="/assets/imgs/hero-bg.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="slide uslugi">
+            <a name="services"></a>
+            <div class="container">
+                <div class="uslugi-block">
+                    <h2>Наши услуги </h2>
+                    <%- config.uslugiText %>
+                       
+                    <% if (uslGr) {  %>
+                        <div class="uslugi-types">
+                            <% for (gr of uslGr) {  %>
+                            <a href="/group/<%= gr.id %>" class="uslugi-type">
+                                <img src="/uploads/<%= gr.images %>" alt="tree">
+                                <span><%= gr.name %></span>
+                            </a>
+                            <% } %>
+                           
+                        </div>
+                        <% } %>
+                </div>
+                <div class="uslugi-img">
+                    <img src="/assets/imgs/house.png" alt="house" class="">
+                </div>
+            </div>
+        </div>
+        <div class="slide works">
+            <div class="container">
+                <div class="works-block">
+                    <h2>Наши работы </h2>
+                    <%- config.worksText %>
+                    <a href="/works"class="btn btn-large waves-effect waves-ligth dgreen">Подробнее</a>
+                </div>
+                
+                <div class="works-slider">
+                    <div id="slider" class="slider">
+                        <ul class="slides">
+                            <% for (work of works) { %>
+                          <li>
+                            <img src="/uploads/<%= work.img %>"> 
+                          </li>
+                          <% } %>
+                        </ul>
+                      </div>
+                      <div class="slider slider2">
+                        <ul class="slides">
+                            <% for (work of works) { %>
+                          <li>
+                            <img src="/uploads/<%= work.img %>"> 
+                          </li>
+                          <% } %>
+                        </ul>
+                      </div>
+                      <div class="slider slider3">
+                        <ul class="slides">
+                            <% for (work of works) { %>
+                          <li>
+                            <img src="/uploads/<%= work.img %>"> 
+                          </li>
+                          <% } %>
+                        </ul>
+                      </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide purpose">
+            <a name="purpose"></a>
+
+            <div class="purpose-block">
+                <div class="subblock">
+                    <div class="container">
+                        <div class="half">
+                            <h2>Наша задача</h2>
+                            <img src="/assets/icons/down-arrow.svg" class="arrow-down" />
+                            <%- config.purposeText %>
+                        </div>
+                    </div>
+                </div>
+                <div class="subblock">
+                    <div class="container">
+                        <div class="half">
+                            <h2>Этапы:</h2>
+                            <%- config.stagesText %>
+                        </div>
+                    </div>
+                </div>
+                <img src="/assets/imgs/flower.png" alt="flower" class="purpose-img">
+                <div class="purpose-l"></div>
+            </div>
+        </div>
+    </main>
+ 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.getElementById('slider');
+            let slider = M.Slider.init(elems, {
+                indicators: false,
+                height: 400,
+                interval: 4000
+            });
+            let slider2 = M.Slider.init(document.querySelector('.slider2'), {
+                indicators: false,
+                height: 400,
+                interval: 4000
+            });
+            slider2.next()
+            let slider3 = M.Slider.init(document.querySelector('.slider3'), {
+                indicators: false,
+                height: 400,
+                interval: 4000
+            });
+            slider3.next()
+            slider3.next()
+        });  
+</script>
+<%- include('footer') %>

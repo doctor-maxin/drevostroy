@@ -1,0 +1,72 @@
+<footer class="slide">
+    <div class="container">
+        <form action="" onsubmit="sendEmail(event, false, true)">
+            <div class="input-field">
+                <label for="names">Ваше имя</label>
+                <input required id="names" type="text" name="name" placeholder="">
+            </div>
+            <div class="input-field">
+                <label for="phone">Телефон</label>
+                <input required id="phone" type="text" name="phone" placeholder="+7">
+            </div>
+            <input type="submit" class="btn white" value="Заказать обратный звонок">
+        </form>
+        <nav>
+            <ul>
+                <li><a href="/works" class="footer-link">Галерея работ</a></li>
+                <li><a href="/#services" class="footer-link">Наши услуги</a></li>
+                <li><a href="/#purpose" class="footer-link">Наша задача</a></li>
+                <li><a href="tel:79996287604" class="phone footer-link"><img src="/assets/icons/phone.svg" alt="phone">+7 (999) 628 76 04</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="socials">
+        <a href="#"><img src="" alt=""></a>
+        <a href="#"><img src="" alt=""></a>
+        <a href="#"><img src="" alt=""></a>
+        <a href="#"><img src="" alt=""></a>
+    </div>
+</footer>
+<script>
+    function sendEmail(event, withService, isFooter) {
+        event.preventDefault()
+        let name = document.querySelector('#name').value;
+        let tel = document.querySelector('#tel').value;
+        if (isFooter) {
+            name = document.querySelector('#names').value;
+            tel = document.querySelector('#phone').value;
+            event.target.querySelector('.btn.white').disabled = true
+        }
+        let service = ''
+        if (withService) service = document.querySelector('#service').value;
+
+        let formData = new FormData();
+        // formData.append('name', name)
+        // formData.append('tel', tel)
+        // formData.append('service', service)
+
+        fetch('/book', { 
+            method: 'POST', body: JSON.stringify({
+            name: name,
+            tel: tel,        
+            service: service
+        }), headers: { 'Content-Type': 'application/json'}
+        }).then(res => { return res.json(); }).then(res => {
+            event.target.reset()
+            if (isFooter) {
+                event.target.querySelector('.btn.white').disabled = false
+            } else {
+                let ins = M.Modal.getInstance(document.querySelector('#modal1'))
+                ins.close()
+            }
+            if (res.rejected.length > 0) {
+                M.toast({html: 'Ошибка! Что-то пошло не так, попробуй еще раз', classes: 'rounded failed'});
+            } else M.toast({html: 'Поздравляем! Ваша заявка получена', classes: 'rounded success'});
+        })
+    }
+    setTimeout(function() {
+        M.AutoInit();
+    }, 1)
+</script>
+</body>
+</html>

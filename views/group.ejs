@@ -1,0 +1,44 @@
+<%- include('header', {config: config}) %>
+<link rel="stylesheet" href="/dist/css/group.css">
+<main>
+  <div class="switcher">
+    <div class="container">
+      <div onclick="window.history.back();" class="left"></div>
+      <h1><%= uslGr.name %></h1>
+    </div>
+  </div>
+  <div class="slide group" style="padding-top: 20px">
+    <div class="container">
+      <div class="description">
+        <%- uslGr.description %>
+      </div>
+      <img src="/uploads/<%= uslGr.images %>" alt="">
+    </div>
+    <% if (uslGr.Uslugas) { %>
+    <div class="container">
+      <h3 >УСЛУГИ</h3>
+      <div class="cards ">
+        <div class="row">
+          <% for (usl of uslGr.Uslugas) { %>                      
+            <div class="col s12  l4">
+              <div class="card">
+                <div class="card-image">
+                  <img src="/uploads/<%= usl.images %>">
+                </div>
+                <div class="card-content">
+                  <span class="card-title"><%= usl.name %></span>
+                  <%- usl.description %>
+                </div>
+                <div class="card-action">
+                  <a href="/usluga/<%= usl.id %>">Подробнее</a>
+                </div>
+              </div>
+            </div>
+          <% } %> 
+        </div>                    
+      </div>
+    </div>
+    <% } %>
+  </div>
+</main>
+<%- include('footer') %>

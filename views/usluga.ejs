@@ -1,0 +1,122 @@
+<%- include('header', {config: config}) %>
+<link rel="stylesheet" href="/dist/css/usluga.css">
+
+    <main>
+        <div class="switcher">
+            <div class="container">
+                <a title="Назад" href="/group/<%= usl.UslugiGroup.id %>" class="left"></a>
+                <h1><%= usl.name %></h1>
+            </div>
+        </div>
+        <div class="slide usluga">
+            <div class="container">
+                <div class="block">
+                    <h3><%= usl.UslugiGroup.bane %></h3>
+                    <div class="sub-desc">Проекты до <%= usl.maxS %>м2</div>
+                    <div class="pull-right">Стоимость от <%= usl.minPrice %>руб.</div>
+                    <div class="description">
+                        <%- usl.description %>
+                    </div>
+                    <% if (usl.UslugaWorks.length > 0) { %>
+                        <h5>Комплектация</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Наименование работ</td>
+                                <td>Стоимость работ</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (work of usl.UslugaWorks) { %>
+                            <tr><td><%= work.label %></td><td><%= work.cost %></td></tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                    <% } %>
+                    <button data-target="modal1" class="modal-trigger btn btn-large waves-effect dgreen waves-light">ЗАКАЗАТЬ</button>
+                </div>
+                <div class="block">
+                    <img src="/assets/imgs/plan.png" alt="plan" class="ulsuga-img materialboxed">
+                </div>
+            </div>
+            <% if (usl.Works.length > 0) { %>
+            <h3>Наши работы</h3>
+            <div class="slider">
+                    <ul class="slides">
+                        <% for (work of usl.Works) { %>
+                      <li>
+                        <img src="/uploads/<%= work.img %>"> <!-- random image -->
+                        <div class="caption left-align">
+                            <div class="slide-header">
+                                <% if (usl.Works.length > 1) { %><div class="left" onclick="M.Slider.getInstance(document.querySelector('.slider')).prev();"></div><% } %>
+                                <h3><%= work.name %></h3>
+                                <% if (usl.Works.length > 1) { %><div class="right" onclick="M.Slider.getInstance(document.querySelector('.slider')).next();"></div><% } %>
+                            </div>
+
+                            <div class="work-desc">
+                                <%- work.description %>
+                            </div>
+                            <div class="rows">
+                                <span>Срок строительства: <b><%= work.srok %></b></span>
+                                <span>Площадь работы: <b><%= work.square %> м2</b></span>
+                                <span>Размеры: <b><%= work.sizes %></b></span>
+                                <span>Стоимость: <b><%= work.cost %></b> тыс. руб.</span>
+                            </div>
+                            <% if (work.images) { %> 
+                                <div class="imgs">
+                                <% for (let i = 0; i < work.images.key.length; i++) { %>
+                                    <img src="/<%= work.images.bucket[i] %>/<%= work.images.key[i] %>" alt="<%= work.images.key[i] %>" class="materialboxed">
+                                <% } %>
+                            </div>
+                            <% } %>
+                        </div>
+                      </li>
+                      <% } %>
+                    </ul>
+            </div>
+            <% } %>
+        </div>
+    </main>
+
+    <form onsubmit="sendEmail(event, true)" id="modal1" class="modal modal-fixed-footer">
+        <div class="modal-content">
+          <h4>Заказать услугу</h4>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input required placeholder="Иванов Иван Иванович" id="name" type="text" class="validate">
+                    <label class="active" for="name">Ваше имя</label>
+                  </div>
+                  <div class="input-field col s12">
+                    <input required placeholder="+7 999 99 99" id="tel" type="tel" class="validate">
+                    <label class="active" for="tel">Ваш номер телефона</label>
+                  </div>
+                  <% if (uslugi)  { %>
+                  <div class="input-field col s12">
+                        <select id="service">
+                        <% for (us of uslugi) { %> 
+                            <option value="<%= us.name %>" <%= usl.id == us.id ? 'selected' : '' %>><%= us.name %></option>
+                        <% } %>                    
+                        </select>
+                    <label>Выберите услугу</label>
+                </div>
+                <% } %>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="waves-effect waves-green btn-flat">ЗАКАЗАТЬ</button>
+        </div>
+    </form>
+
+    <script>
+     
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.slider');
+            var instances = M.Slider.init(elems, {
+                indicators: false,
+                height: window.innerHeight,
+                interval: 15000
+            });
+        });      
+
+    </script>
+<%- include('footer') %>
